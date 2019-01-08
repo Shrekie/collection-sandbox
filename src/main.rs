@@ -14,8 +14,8 @@ mod average {
         sorted.sort();
 
         let len = sorted.len() as u32;
-        
-        if len <= 1 {return 0}
+
+        if len <= 1 { return 0 }
         let middle = (len / 2) as usize;
 
         if let 0 = len % 2 {
