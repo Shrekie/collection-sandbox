@@ -1,6 +1,6 @@
 mod average {
 
-    use std::collections::HashMap;
+    use std::collections::BTreeMap;
 
     // average value
     pub fn mean(irregular: &Vec<u32>) -> u32 {
@@ -36,24 +36,11 @@ mod average {
     pub fn mode(irregular: &Vec<u32>) -> u32 {
 
         let mut keys = irregular.to_vec();
-
         keys.dedup();
 
-        let mut sum: HashMap<_, _> = keys.iter().zip(vec![0; keys.len()]).collect();
-
-        // #TODO: count the values 
-        for key in irregular {
-
-            let counter = match sum.get(key) {
-
-                Some(x) => *x+1,
-
-                None => 0,
-
-            };
-
-            sum.insert(key, counter);
-
+        let mut sum: BTreeMap<_, _> = keys.iter().zip(vec![0; keys.len()]).collect();
+        for key in &keys {
+            sum.insert(key, irregular.iter().filter(|&n| *n == *key).count());
         };
 
         **sum.iter().max_by(|x, y| x.1.cmp(y.1)).unwrap().0
@@ -64,7 +51,7 @@ mod average {
 
 fn main() {
 
-    let irregular = vec![15, 15, 22, 22, 22, 32];
+    let irregular = vec![15, 15, 22, 22, 22, 32, 32, 32, 15, 32, 15, 15];
 
     println!("{}", average::mean(&irregular));
 
